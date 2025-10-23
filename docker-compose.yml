@@ -32,9 +32,9 @@ services:
       - "8000:8000"
     environment:
       - MONGODB_URL=mongodb://fateverse:fateverse123@mongodb:27017/fateverse?authSource=admin
-      - JWT_SECRET=${JWT_SECRET:-your-secret-key}
-      - GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
-      - CORS_ORIGIN=http://localhost:3000
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost,http://127.0.0.1:3000,https://dovannguyen.id.vn}
       - NODE_ENV=production
     depends_on:
       mongodb:
@@ -55,16 +55,16 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://localhost:8000
-        - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+        - VITE_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
     ports:
       - "3000:80"
     depends_on:
       backend:
         condition: service_healthy
     environment:
-      - VITE_API_URL=http://localhost:8000
-      - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+      - VITE_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
       - NODE_ENV=production
     networks:
       - fateverse-network
