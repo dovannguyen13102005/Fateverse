@@ -4,6 +4,7 @@ from app.routes import auth, numerology, zodiac, love, tarot, fortune, users, hi
 from app.database.mongodb import init_db
 from datetime import datetime
 import uvicorn
+import os
 
 app = FastAPI(
     title="FateVerse API - Ứng Dụng Xem Bói",
@@ -11,15 +12,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Get CORS origins from environment variable
+cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost,http://127.0.0.1:3000")
+cors_origins = [origin.strip() for origin in cors_origins_str.split(",")]
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost",
-        "http://127.0.0.1:3000",
-        "*"  # Allow all in development
-    ],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

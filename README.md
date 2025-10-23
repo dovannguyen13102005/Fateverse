@@ -41,6 +41,8 @@ A modern fortune telling web application with Numerology, Zodiac, Love Matching,
 - Docker and Docker Compose installed
 - Google OAuth 2.0 credentials (see setup below)
 
+> **📦 For VPS/Production Deployment**: See detailed guide in [VPS Deployment Guide](docs/VPS_Deployment_Guide.md)
+
 ### 1. Clone the repository
 ```bash
 git clone <repository-url>
@@ -287,7 +289,15 @@ docker-compose up --build --force-recreate
 - Verify credentials in .env file
 - Check MongoDB logs: `docker-compose logs mongodb`
 
-## 📝 License
+## � Documentation
+
+- [VPS Deployment Guide](docs/VPS_Deployment_Guide.md) - Complete guide for deploying to VPS with Docker
+- [Email/Password Authentication](docs/Email_Password_Authentication.md) - Email authentication feature guide
+- [Architecture Overview](docs/FateVerse_Architecture.md) - System architecture documentation
+- [UI Design Guide](docs/FateVerse_UI_Design.md) - UI/UX design specifications
+- [User Stories](docs/FateVerse_UserStories.md) - Feature requirements and user stories
+
+## �📝 License
 
 This project is licensed under the MIT License.
 
