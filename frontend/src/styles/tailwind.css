@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: 15 12 41; /* #0f0c29 */
+    --color-bg-secondary: 48 43 99; /* #302b63 */
+    --color-bg-tertiary: 36 36 62; /* #24243e */
+    --color-primary: 138 43 226; /* #8A2BE2 */
+    --color-secondary: 255 215 0; /* #FFD700 */
+    --color-accent: 224 176 255; /* #E0B0FF */
+  }
+
+  body {
+    @apply bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white min-h-screen font-primary;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-colors duration-300;
+  }
+
+  .glow-button {
+    @apply px-6 py-3 rounded-full bg-gradient-to-r from-primary to-accent text-white font-semibold 
+           hover:shadow-lg hover:shadow-primary/50 transition-all duration-300
+           active:scale-95;
+  }
+
+  .input-field {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2.5 
+           text-white placeholder-white/50 focus:border-accent/50 focus:ring-1 focus:ring-accent/50
+           transition-all duration-300;
+  }
+
+  .nav-link {
+    @apply text-white/70 hover:text-white transition-colors duration-200 flex items-center gap-2;
+  }
+
+  .nav-link.active {
+    @apply text-accent;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

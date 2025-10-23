@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme Variables */
+:root,
+[data-theme="galaxy"] {
+  --bg-primary: #0a0118;
+  --bg-secondary: #1a0a2e;
+  --accent-color: #8a2be2;
+  --accent-hover: #9b59b6;
+}
+
+[data-theme="nebula"] {
+  --bg-primary: #0d0221;
+  --bg-secondary: #1a0d33;
+  --accent-color: #4b0082;
+  --accent-hover: #6a0dad;
+}
+
+[data-theme="sunrise"] {
+  --bg-primary: #1a0f08;
+  --bg-secondary: #2d1810;
+  --accent-color: #ffd700;
+  --accent-hover: #ffed4e;
+}
+
+[data-theme="ocean"] {
+  --bg-primary: #001a33;
+  --bg-secondary: #002244;
+  --accent-color: #1e90ff;
+  --accent-hover: #4da6ff;
+}
+
+[data-theme="forest"] {
+  --bg-primary: #0a1f0a;
+  --bg-secondary: #133013;
+  --accent-color: #228b22;
+  --accent-hover: #32cd32;
+}
+
+[data-theme="sunset"] {
+  --bg-primary: #1a0808;
+  --bg-secondary: #2d1010;
+  --accent-color: #ff6347;
+  --accent-hover: #ff7f66;
+}
+
+@layer base {
+  body {
+    @apply font-quicksand;
+    background: var(--bg-primary);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-cinzel;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 transition-colors duration-200;
+  }
+  .card {
+    @apply bg-white/10 backdrop-blur-lg rounded-xl p-6;
+  }
+  .input {
+    @apply bg-white/5 border border-purple-400/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500;
+  }
+}
+
+/* Custom animations */
+.glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
+  }
+  to {
+    box-shadow: 0 0 10px #fff, 0 0 20px #ff4da6, 0 0 30px #ff4da6, 0 0 40px #ff4da6;
+  }
+}

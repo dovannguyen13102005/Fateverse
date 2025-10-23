@@ -1,0 +1,87 @@
+services:
+  # MongoDB service (start first for dependencies)
+  mongodb:
+    image: mongo:6.0
+    pull_policy: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: fateverse
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-fateverse123}
+      MONGO_INITDB_DATABASE: fateverse
+    networks:
+      - fateverse-network
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    command: ["--auth", "--bind_ip_all"]
+
+  # Backend service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://fateverse:fateverse123@mongodb:27017/fateverse?authSource=admin
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key}
+      - GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
+      - CORS_ORIGIN=http://localhost:3000
+      - NODE_ENV=production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - fateverse-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8000
+        - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-772835309497-j0vpom245laki2936u19q3j1hb72h8jg.apps.googleusercontent.com}
+      - NODE_ENV=production
+    networks:
+      - fateverse-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  fateverse-network:
+    driver: bridge
+    name: fateverse-network
+
+volumes:
+  mongodb_data:
+    name: fateverse-mongodb-data
+  mongodb_config:
+    name: fateverse-mongodb-config
